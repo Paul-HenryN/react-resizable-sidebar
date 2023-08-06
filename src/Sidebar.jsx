@@ -19,13 +19,7 @@ export default function Sidebar() {
 
         const isWidthInRange = newWidth >= minWidth && newWidth <= maxWidth;
 
-        if (!isWidthInRange) {
-          return previousWidth;
-        }
-
-        localStorage.setItem("sidebarWidth", newWidth);
-
-        return newWidth;
+        return isWidthInRange ? newWidth : previousWidth;
       });
     });
 
@@ -33,6 +27,10 @@ export default function Sidebar() {
       isResized.current = false;
     });
   }, []);
+
+  useEffect(() => {
+    localStorage.setItem("sidebarWidth", width);
+  }, [width]);
 
   return (
     <div className="flex">
@@ -42,7 +40,7 @@ export default function Sidebar() {
 
       {/* Handle */}
       <div
-        className="w-2 cursor-col-resize bg-transparent"
+        className="w-2 cursor-col-resize"
         onMouseDown={() => {
           isResized.current = true;
         }}
